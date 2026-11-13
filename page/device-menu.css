@@ -1,0 +1,68 @@
+.device-menu {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: clamp(4px, 1.2vw, 18px);
+  height: auto;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid #dce7e2;
+}
+.device-category { position: relative; }
+.device-menu button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 clamp(8px, 1.4vw, 17px);
+  color: #385b57;
+  font: inherit;
+  font-weight: 650;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.device-menu button i {
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-1px) rotate(45deg);
+}
+.device-menu .current > button, .device-menu button[aria-expanded="true"] {
+  color: #0b7266;
+  background: #eef7f2;
+}
+.device-menu ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: max(100%, 140px);
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #dce7e2;
+  border-radius: 9px;
+  box-shadow: 0 8px 22px #183b3020;
+}
+.device-menu a {
+  display: block;
+  padding: 9px 11px;
+  border-radius: 5px;
+  color: #314b48;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.device-menu a:hover, .device-menu a:focus-visible, .device-menu a[aria-current="page"] {
+  background: #e5f3ed;
+  color: #0b7266;
+}
+.device-menu a[aria-current="page"] { font-weight: 700; }
+@media (max-width: 520px) {
+  .device-menu { padding: 0 5px; }
+  .device-menu button { gap: 6px; font-size: 12px; }
+  .device-category:nth-child(n+3) ul { left: auto; right: 0; }
+}

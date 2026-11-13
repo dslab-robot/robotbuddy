@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RobotBuddy · Microduck</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="device-menu.css"><script type="module" src="device-menu.js"></script><script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script><script src="vendor/blockly.js"></script><script src="vendor/blocks.js"></script><script src="vendor/zh-hans.js"></script></head>
+<body class="teaching-rig-page microduck-page" data-arm="microduck"><header><a class="brand" href="#"><span class="brand-icon">⌘</span><div>RobotBuddy<small>具身智能工作台</small></div></a><nav><span class="nav-active">编程工作台</span><button id="guide">使用指南 ↗</button></nav><div class="header-right"><span class="connection"><i></i> 虚拟设备</span><span class="avatar">M</span></div></header>
+<nav class="device-menu" aria-label="设备分类">
+  <div class="device-category">
+    <button type="button" aria-expanded="false" aria-controls="device-group-1">机械臂<i aria-hidden="true"></i></button>
+    <ul id="device-group-1" hidden>
+      <li><a href="./">Magnician</a></li>
+      <li><a href="open-manipulator-x.html">OpenMANIPULATOR-X</a></li>
+      <li><a href="so101.html">SO101</a></li>
+      <li><a href="fr3.html">Franka FR3</a></li>
+    </ul>
+  </div>
+  <div class="device-category">
+    <button type="button" aria-expanded="false" aria-controls="device-group-2">智能车<i aria-hidden="true"></i></button>
+    <ul id="device-group-2" hidden>
+      <li><a href="openbot.html">OpenBot</a></li>
+      <li><a href="jetrover.html">JetRover</a></li>
+    </ul>
+  </div>
+  <div class="device-category current">
+    <button type="button" aria-expanded="false" aria-controls="device-group-3">多足机器人<i aria-hidden="true"></i></button>
+    <ul id="device-group-3" hidden>
+      <li><a href="microduck.html" aria-current="page">MicroDuck</a></li>
+      <li><a href="op3.html">OP3</a></li>
+      <li><a href="go2.html">宇树Go2</a></li>
+      <li><a href="zgps-ball.html">ZGPS_01</a></li>
+      <li><a href="octobot.html">Octobot</a></li>
+    </ul>
+  </div>
+  <div class="device-category">
+    <button type="button" aria-expanded="false" aria-controls="device-group-4">灵巧手<i aria-hidden="true"></i></button>
+    <ul id="device-group-4" hidden>
+      <li><a href="amazinghand.html">AmazingHand</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="project-bar"><div><span class="crumb">我的实验 / </span><strong>Microduck 实验</strong><span class="tag">本地演示</span></div><div><a class="outline microduck-training-link" href="microduck-training.html">强化学习实验 ↗</a><span id="save-state">修改自动保存在此浏览器</span><button id="export" class="outline">↓ 导出项目</button><label class="outline file-label">↑ 导入<input type="file" id="import" accept=".json" hidden></label></div></div>
+<main><aside class="panel task-panel"><div class="section-head"><span class="eyebrow">01 / TASK</span><h2>从一个想法开始</h2><p>描述任务，看看机器人如何行动。</p></div><label class="field-label" for="prompt">任务指令</label><div class="prompt-wrap"><textarea id="prompt" placeholder="转头，等待 1 秒，再张开鸭嘴，再合上鸭嘴">转头，等待 1 秒，再张开鸭嘴，再合上鸭嘴</textarea><span>支持中文 · 本地规则演示</span></div><button id="generate" class="primary wide">✧ 生成代码与积木 <span>↗</span></button><div id="stationary-skill-list" hidden><div class="examples-title">已发布的原地动作</div><div data-skills style="display:flex;gap:6px;flex-wrap:wrap"></div></div><div class="examples-title">试试这些任务 <span>↙</span></div>
+<button class="example" data-route-demo data-task="往前走 10 厘米，向左转，再走 10 厘米，摔倒就停止"><span class="example-icon mint">↱</span><div>走一条 L 形路线<small>走 10 厘米 · 左转 90° · 再走 10 厘米</small></div><b>↗</b></button>
+<button class="example" data-recovery-route-demo data-task="往前走 10 厘米，向左转，再走 10 厘米，摔倒就起身并站稳"><span class="example-icon mint">↱</span><div>摔倒后起身继续路线<small>用训练好的起身技能 · 转弯时加测试推力</small></div><b>↗</b></button>
+<button class="example" data-route-demo data-task="往前走 20 厘米，向左转，张嘴，再走 30 厘米，摔倒就停止"><span class="example-icon mint">↱</span><div>转弯后张嘴<small>走 20 厘米 · 左转 · 张嘴 · 再走 30 厘米</small></div><b>↗</b></button>
+<button class="example" data-fall-demo data-task="往前走 50 厘米，如果摔倒就爬起来，再走完剩下的距离"><span class="example-icon mint">↗</span><div>摔倒后继续走<small>调用训练步态 · 目标 50 厘米</small></div><b>↗</b></button>
+<button class="example" data-task="转头，等待 1 秒，再张开鸭嘴，再合上鸭嘴"><span class="example-icon peach">⌁</span><div>转头后张嘴<small>观察头部和鸭嘴动作</small></div><b>↗</b></button><button class="example" data-task="张开鸭嘴，等待 1 秒，再合上鸭嘴"><span class="example-icon lavender">⌁</span><div>鸭嘴开合<small>在积木里修改动作时长</small></div><b>↗</b></button><button class="example" data-task="J8 转到 -25 度，再站立"><span class="example-icon mint">⌁</span><div>调整头部转向<small>试试单关节指令</small></div><b>↗</b></button><div class="task-note"><span>✦</span><div><strong>让每一步都看得见</strong><p>修改积木中的数值，再运行一次，观察机械臂的变化。</p></div></div><div class="device-card"><div class="device-mini">⌁</div><div><strong>Microduck</strong><small id="device-sub">正在载入你的模型…</small></div><span class="dot"></span></div></aside>
+<section class="panel scene-panel"><div class="panel-heading"><div><span class="eyebrow">02 / SIMULATION</span><h2>虚拟仿真 <span class="tiny-tag">3D</span></h2></div><button id="reset-view" class="icon-button" title="重置视角">⌖</button></div><div id="viewport"><div class="scene-badge"><i></i> <span id="scene-status">准备场景</span></div><div class="view-tools"><button id="view-iso" title="透视视图">◈</button><button id="view-top" title="俯视图">⊞</button><button id="focus-gripper" title="模型特写" aria-label="模型特写" disabled>⊙</button></div><div id="loading"><div class="spinner"></div><strong>正在载入工程模型</strong><span>首次载入可能需要一点时间</span></div><div class="scene-caption"><span class="axis"><b>X</b><b>Y</b><b>Z</b></span><span id="duck-scene-caption">拖动旋转 · 滚轮缩放 · 右键平移</span></div></div><div class="transport"><button id="run" class="primary">▶ 运行仿真</button><button id="step" class="outline" title="执行一个步骤">▷ 单步</button><button id="reset" class="icon-button" title="复位">↺</button><select id="speed" aria-label="播放速度"><option value="0.5">0.5×</option><option value="1" selected>1× 速度</option><option value="2">2×</option></select><span id="progress-text">准备就绪</span></div><div class="walk-controls"><label><input type="checkbox" id="walk-disturbance">中途推一下（摔倒测试）</label><label id="route-push-control" hidden>施加步骤 <select id="route-push-step"></select></label><span id="walk-profile" role="status">读取训练步态</span><a href="microduck-walking.html" id="walking-course-link">步态训练 ↗</a></div><div class="progress-track"><div id="progress"></div></div><div class="telemetry"><div><span>当前步骤</span><strong id="current-step">—</strong></div><div><span id="duck-joint-label">头部转向 / 鸭嘴</span><strong id="joint-value">0.0<span> °</span></strong></div><div><span id="duck-state-label">鸭嘴状态</span><strong id="grip-value">合上</strong></div></div><div class="model-info"><span>◉</span><p id="model-info">官方双足模型。支持头部、腿部和鸭嘴的关节预览。</p><button id="model-toggle">模型</button></div></section>
+<section class="panel program-panel"><div class="panel-heading"><div><span class="eyebrow">03 / PROGRAM</span><h2>理解并修改程序</h2></div><span id="block-count" class="tiny-tag">0 个积木</span></div><div class="tabs" role="tablist"><button id="tab-blocks" class="active" role="tab" aria-selected="true">▧ 图形积木</button><button id="tab-code" role="tab" aria-selected="false">&lt;/&gt; Python 代码</button></div><div class="editor-hint" id="editor-hint"><span>✥</span> 拖拽组合积木，点击白色输入框修改参数</div><div class="editor-area"><div id="blockly"></div><div id="code-pane" hidden><div class="code-toolbar"><span>task.py <i>教学动作接口</i></span><button id="apply-code">转换为积木 ↗</button></div><textarea id="code" spellcheck="false" aria-label="Python代码编辑器"></textarea><div class="code-foot"><span>支持 pose / wait / repeat / move</span><button id="copy-code">复制代码</button></div></div></div><div class="program-footer"><span class="dot"></span><span id="program-state">积木和代码保持同步</span><button id="fit">适应画布 ⛶</button></div></section>
+</main><section class="console panel"><div class="console-title"><strong>执行记录</strong><span class="tiny-tag">CONSOLE</span><button id="clear-log">清空</button></div><div id="log" aria-live="polite"></div></section><footer><span>RobotBuddy <b>·</b> 从想法到行动</span><span>本地姿态预览 · 头部、双足和鸭嘴可编程</span></footer><div id="toast" role="status"></div><dialog id="help"><button id="close-help" class="icon-button close">×</button><span class="eyebrow">QUICK START</span><h2>让代码动起来</h2><ol><li>输入任务，或选择一个示例，生成教学程序。</li><li>在图形积木中改参数、拖动排序，或编辑支持的 Python 子集后点“转换为积木”。</li><li>运行、暂停或单步执行，观察高亮积木与模型动作。</li><li>导出项目可保留任务和积木。程序也会自动保存在浏览器。</li></ol><p>当前任务生成使用本地规则。官方双足模型。支持头部、腿部和鸭嘴的关节预览。 想体验步态和动态平衡，可打开 <a href="https://huggingface.co/spaces/pollen-robotics/microduck-simulator" target="_blank" rel="noopener noreferrer">官方 MuJoCo 仿真</a>。</p></dialog><script type="module" src="app.js"></script><script type="module">
+  if (location.hostname === '127.0.0.1' && location.port === '4173') {
+    const response = await fetch('./api/training/00000000-0000-0000-0000-000000000000').catch(() => null);
+    if (!response?.headers.get('Content-Type')?.includes('application/json')) {
+      document.getElementById('walking-course-link').href = 'http://127.0.0.1:4187/microduck-walking.html';
+      document.querySelector('.microduck-training-link').href = 'http://127.0.0.1:4187/microduck-training.html';
+    }
+  }
+</script></body></html>

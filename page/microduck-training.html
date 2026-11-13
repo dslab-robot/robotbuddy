@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RobotBuddy · Microduck 训练</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="microduck-training.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body class="training-page">
+  <header class="training-header">
+    <a href="index.html" class="brand"><span class="brand-icon">⌘</span><span>RobotBuddy<small>具身智能工作台</small></span></a>
+    <a href="microduck.html" class="return-link">← 返回 Microduck 工作台</a>
+  </header>
+  <main class="training-workbench">
+    <div class="training-hero">
+      <div>
+        <div class="training-context">MICRODUCK <span></span> 强化学习实验</div>
+        <h1>让MicroDuck学会看向目标</h1>
+        <p>设定奖励，观察它怎样练习，再对比修改前后的结果。</p>
+      </div>
+      <span class="runtime" data-runtime-kind="training"><i></i> MuJoCo · 本地 CPU</span>
+    </div>
+    <nav class="training-tabs" aria-label="训练项目"><a aria-current="page" href="microduck-training.html">看向目标</a><a href="microduck-walking.html" id="walking-lab-link">向前走</a><a href="microduck-turning.html" id="turning-lab-link">原地转向</a></nav>
+    <div class="training-top">
+      <section class="training-panel task-settings">
+        <h2>训练任务</h2>
+        <form id="training-form">
+          <label class="training-label" for="training-task">你想让机器鸭看哪里？</label>
+          <textarea id="training-task" rows="2" required maxlength="100">让机器鸭看向左上方</textarea>
+          <div class="goal-choices" aria-label="选择示例任务">
+            <button type="button" data-goal="左上方">左上方</button>
+            <button type="button" data-goal="正前方">正前方</button>
+            <button type="button" data-goal="右下方">右下方</button>
+            <button type="button" data-goal="左下方">左下方</button>
+          </div>
+          <fieldset class="target-settings">
+            <legend>摆放橙球</legend>
+            <label for="target-lateral">左右位置 <output id="target-lateral-value" for="target-lateral">向左 26 厘米</output></label>
+            <input id="target-lateral" type="range" min="-26" max="26" step="1" value="-26">
+            <label for="target-height">目标高度 <output id="target-height-value" for="target-height">33 厘米</output></label>
+            <input id="target-height" type="range" min="17" max="33" step="1" value="33">
+            <p id="target-forward-distance">目标距机身原点向前 45 厘米</p>
+          </fieldset>
+          <div class="training-form-row">
+            <label>训练局数
+              <select id="training-episodes"><option value="240">240 局</option><option value="480" selected>480 局</option><option value="720">720 局</option></select>
+            </label>
+            <label>达标偏差
+              <select id="training-tolerance"><option value="5">5° 以内</option><option value="7" selected>7° 以内</option><option value="10">10° 以内</option></select>
+            </label>
+          </div>
+          <label class="penalty-label" for="training-penalty">每调整一次扣分 <output id="penalty-value" for="training-penalty">0.25</output></label>
+          <input id="training-penalty" type="range" min="0" max="1.5" step=".05" value=".25">
+          <p class="reward-note">朝目标转得更准就得分，进入达标范围再加 7 分。每局最多 20 步。</p>
+          <div class="training-actions">
+            <button class="primary" type="submit" id="training-start">▶ 开始训练</button>
+            <button class="outline" type="button" id="training-stop" hidden>停止</button>
+          </div>
+        </form>
+        <p id="training-message" role="status">可以点选方向，也可以用滑杆摆放橙球。</p>
+      </section>
+      <section class="training-panel training-preview">
+        <div class="training-panel-head"><h2>3D 回放</h2><span id="replay-status">加载模型中</span></div>
+        <div id="training-scene" aria-label="Microduck 3D 训练回放">
+          <div class="scene-legend"><span><i></i> 目标</span><span><i></i> 相机朝向</span></div>
+        </div>
+        <div class="training-replay-controls">
+          <div class="training-stages" aria-label="选择回放阶段">
+            <button type="button" data-stage="baseline" disabled>随机动作</button>
+            <button type="button" data-stage="early" disabled>早期</button>
+            <button type="button" data-stage="middle" disabled>中期</button>
+            <button type="button" data-stage="final" disabled>训练后</button>
+          </div>
+          <button type="button" class="outline" id="replay-again" disabled>↻ 重播</button>
+        </div>
+        <p class="replay-summary" id="replay-summary">各阶段的回放会在训练过程中依次开放。</p>
+      </section>
+    </div>
+    <div class="training-bottom">
+      <section class="training-panel training-progress">
+        <div class="training-panel-head"><h2>学习进度</h2><span id="job-status">等待开始</span></div>
+        <progress id="job-progress" value="0" max="480" aria-label="训练局数"></progress>
+        <div class="training-numbers">
+          <div><span>已练习</span><strong id="episode-count">—</strong></div>
+          <div><span>最近达标率</span><strong id="training-rate">—</strong></div>
+          <div><span>最近平均步数</span><strong id="training-steps">—</strong></div>
+        </div>
+        <canvas id="learning-chart" role="img" aria-label="最近训练的达标率"></canvas>
+        <p class="chart-caption">达标率按最近 100 局计算，开局不足 100 局时使用已有局数。</p>
+      </section>
+      <section class="training-panel training-comparison">
+        <div class="training-panel-head"><h2>两轮对比</h2><span>从 5 种新起始姿态测试</span></div>
+        <div id="comparison-output" class="comparison-empty">完成第一轮后，改一项奖励再训练一次。这里会显示两轮的达标数、平均步数和偏差。</div>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="training-lesson-store.js"></script>
+  <script type="module" src="microduck-training.js"></script>
+  <script>
+    if (location.hostname === '127.0.0.1' && location.port === '4186') {
+      document.getElementById('walking-lab-link').href = 'http://127.0.0.1:4187/microduck-walking.html';
+      document.getElementById('turning-lab-link').href = 'http://127.0.0.1:4187/microduck-turning.html';
+    }
+  </script>
+  <script type="module" src="runtime-status.js"></script>
+</body>
+</html>

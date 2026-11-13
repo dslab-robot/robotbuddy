@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RobotBuddy · Microduck 原地转向</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="microduck-training.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body class="training-page" data-task="turning">
+  <header class="training-header">
+    <a href="index.html" class="brand"><span class="brand-icon">⌘</span><span>RobotBuddy<small>具身智能工作台</small></span></a>
+    <a href="microduck.html" class="return-link">← 返回 Microduck 工作台</a>
+  </header>
+  <main class="training-workbench">
+    <div class="training-hero">
+      <div>
+        <div class="training-context">MICRODUCK <span></span> 强化学习实验</div>
+        <h1>让MicroDuck学会原地转向</h1>
+        <p>转到指定角度并站稳，尽量留在原来的位置。</p>
+      </div>
+      <span class="runtime" data-runtime-kind="training"><i></i> MuJoCo · 本地 CPU</span>
+    </div>
+    <nav class="training-tabs" aria-label="训练项目"><a href="microduck-training.html">看向目标</a><a href="microduck-walking.html">向前走</a><a aria-current="page" href="microduck-turning.html">原地转向</a></nav>
+    <div class="training-top">
+      <section class="training-panel task-settings">
+        <h2>训练任务</h2>
+        <form id="training-form">
+          <div class="training-form-row">
+            <label>方向<select id="training-direction"><option value="left">左转</option><option value="right">右转</option></select></label>
+            <label>目标转角<select id="training-angle"><option value="45">45°</option><option value="90" selected>90°</option><option value="135">135°</option><option value="180">180°</option></select></label>
+          </div>
+          <label class="training-label" for="training-episodes">尝试多少组参数？</label>
+          <div class="training-form-row walking-form-row">
+            <select id="training-episodes"><option value="12">12 组</option><option value="24" selected>24 组</option><option value="36">36 组</option></select>
+          </div>
+          <label class="penalty-label" for="training-penalty">转身时移位扣分 <output id="penalty-value" for="training-penalty">4.00</output></label>
+          <input id="training-penalty" type="range" min="0" max="10" step=".5" value="4">
+          <p class="reward-note">转到目标 ±5° 并保持站立 0.5 秒即达标。转身时移动得越远，扣分越多。</p>
+          <div class="training-actions">
+            <button class="primary" type="submit" id="training-start">▶ 开始训练</button>
+            <button class="outline" type="button" id="training-stop" hidden>停止</button>
+          </div>
+        </form>
+        <p id="training-message" role="status">从官方步态出发，训练调整转速、刹停时机和减少移位的补偿。</p>
+      </section>
+      <section class="training-panel training-preview">
+        <div class="training-panel-head"><h2>3D 转向回放</h2><span id="replay-status">加载模型中</span></div>
+        <div id="training-scene" aria-label="Microduck 3D 训练回放">
+          <div class="scene-legend"><span><i></i> 起始朝向</span><span><i></i> 目标朝向</span></div>
+          <div class="walking-distance">已转 <strong id="walking-distance">0.0°</strong></div>
+        </div>
+        <div class="training-replay-controls">
+          <div class="training-stages" aria-label="选择回放阶段">
+            <button type="button" data-stage="baseline" disabled>官方转向基线</button>
+            <button type="button" data-stage="early" disabled>早期</button>
+            <button type="button" data-stage="middle" disabled>中期</button>
+            <button type="button" data-stage="final" disabled>训练后</button>
+          </div>
+          <button type="button" class="outline" id="replay-again" disabled>↻ 重播</button>
+        </div>
+        <p class="replay-summary" id="replay-summary">各阶段的回放会在训练过程中依次开放。</p>
+      </section>
+    </div>
+    <div class="training-bottom">
+      <section class="training-panel training-progress">
+        <div class="training-panel-head"><h2>学习进度</h2><span id="job-status">等待开始</span></div>
+        <progress id="job-progress" value="0" max="24" aria-label="已尝试参数组数"></progress>
+        <div class="training-numbers">
+          <div><span>已尝试</span><strong id="episode-count">—</strong></div>
+          <div><span>最佳参数达标率</span><strong id="training-rate">—</strong></div>
+          <div><span>最佳参数平均移位</span><strong id="training-steps">—</strong></div>
+        </div>
+        <canvas id="learning-chart" role="img" aria-label="转身时的平均最大移位"></canvas>
+        <p class="chart-caption">每组参数试转 3 次。浅色点显示每组的平均最大移位，深色线显示当前得分最高的一组。</p>
+      </section>
+      <section class="training-panel training-comparison">
+        <div class="training-panel-head"><h2>训练前后对比</h2><span>5 次左右转向验证</span></div>
+        <div id="comparison-output" class="comparison-empty">训练完成后显示验证结果。</div>
+        <div class="training-actions skill-actions">
+          <button class="outline" type="button" id="save-walking-skill" disabled>保存到工作台</button>
+          <a href="microduck.html" class="return-link">在工作台试转 ↗</a>
+          <span id="save-skill-message" role="status"></span>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="training-lesson-store.js"></script>
+  <script type="module" src="microduck-training.js"></script>
+  <script type="module" src="runtime-status.js"></script>
+</body>
+</html>

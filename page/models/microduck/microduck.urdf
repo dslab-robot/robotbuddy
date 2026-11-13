@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="microduck">
+  <link name="world" />
+  <joint name="mount_trunk_base" type="fixed">
+    <parent link="world" />
+    <child link="trunk_base" />
+    <origin xyz="0 0 0.12" rpy="0 -0 0" />
+  </joint>
+  <joint name="left_hip_yaw" type="revolute">
+    <parent link="trunk_base" />
+    <child link="yaw2roll" />
+    <origin xyz="0.006 0.0175 -0.005" rpy="3.141592654 -0 1.570796327" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.4363323129985824" upper="0.5235987755982988" effort="0" velocity="0" />
+  </joint>
+  <joint name="left_hip_roll" type="revolute">
+    <parent link="yaw2roll" />
+    <child link="hip_l" />
+    <origin xyz="0 0.0165 0.0125" rpy="-1.570796327 -0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.3839724354387525" upper="0.3839724354387525" effort="0" velocity="0" />
+  </joint>
+  <joint name="left_hip_pitch" type="revolute">
+    <parent link="hip_l" />
+    <child link="upper_leg_left" />
+    <origin xyz="0.025 0 -0.0185" rpy="-1.570796327 -0 -1.570796327" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.570796326795005" upper="1.5707963267947882" effort="0" velocity="0" />
+  </joint>
+  <joint name="left_knee" type="revolute">
+    <parent link="upper_leg_left" />
+    <child link="leg" />
+    <origin xyz="0.022 0.0357771 -0.004" rpy="3.141592654 -0 1.570796327" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.570796326795012" upper="1.570796326794781" effort="0" velocity="0" />
+  </joint>
+  <joint name="left_ankle" type="revolute">
+    <parent link="leg" />
+    <child link="ankle_left" />
+    <origin xyz="0 0.042 -0.026" rpy="3.141592654 -0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.5707963267949019" upper="1.5707963267948912" effort="0" velocity="0" />
+  </joint>
+  <joint name="neck_pitch" type="revolute">
+    <parent link="trunk_base" />
+    <child link="neck" />
+    <origin xyz="0.026 0.0145 0.0324215" rpy="-1.570796327 0 3.141592654" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.5707963267948966" upper="1.0471975511965976" effort="0" velocity="0" />
+  </joint>
+  <joint name="head_pitch" type="revolute">
+    <parent link="neck" />
+    <child link="neck_pitch" />
+    <origin xyz="0 -0.05 -0" rpy="3.141592654 -0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.5707963267948974" upper="1.5707963267948957" effort="0" velocity="0" />
+  </joint>
+  <joint name="head_yaw" type="revolute">
+    <parent link="neck_pitch" />
+    <child link="yaw_roll_motion" />
+    <origin xyz="-0 0.0186931 -0.0145" rpy="1.570796327 -0 -3.141592654" />
+    <axis xyz="0 0 1" />
+    <limit lower="-2.967059728390373" upper="2.967059728390348" effort="0" velocity="0" />
+  </joint>
+  <joint name="head_roll" type="revolute">
+    <parent link="yaw_roll_motion" />
+    <child link="jaw_soft" />
+    <origin xyz="-0.0179 0 0.0145" rpy="0 -1.570796327 -0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.43633231299859127" upper="0.4363323129985735" effort="0" velocity="0" />
+  </joint>
+  <joint name="beak_opening" type="revolute">
+    <parent link="jaw_soft" />
+    <child link="jaw_pivot" />
+    <origin xyz="0.003 0 -0.01796" rpy="0 -0 0" />
+    <axis xyz="0 1 0" />
+    <limit lower="0" upper="0.32" effort="0" velocity="0" />
+  </joint>
+  <joint name="right_hip_yaw" type="revolute">
+    <parent link="trunk_base" />
+    <child link="bearing_roll" />
+    <origin xyz="0.006 -0.0175 -0.005" rpy="3.141592654 -0 1.570796327" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.5235987755982988" upper="0.4363323129985824" effort="0" velocity="0" />
+  </joint>
+  <joint name="right_hip_roll" type="revolute">
+    <parent link="bearing_roll" />
+    <child link="hip_l_2" />
+    <origin xyz="-0 0.0165 0.0125" rpy="1.570796327 0 3.141592654" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.3839724354387525" upper="0.3839724354387525" effort="0" velocity="0" />
+  </joint>
+  <joint name="right_hip_pitch" type="revolute">
+    <parent link="hip_l_2" />
+    <child link="upper_leg_right" />
+    <origin xyz="0.025 0 -0.0185" rpy="-1.570796327 -0 -1.570796327" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.5707963267949268" upper="1.5707963267948664" effort="0" velocity="0" />
+  </joint>
+  <joint name="right_knee" type="revolute">
+    <parent link="upper_leg_right" />
+    <child link="leg_2" />
+    <origin xyz="-0.022 0.0357771 -0.004" rpy="3.141592654 -0 -0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.570796326794932" upper="1.570796326794861" effort="0" velocity="0" />
+  </joint>
+  <joint name="right_ankle" type="revolute">
+    <parent link="leg_2" />
+    <child link="ankle_right" />
+    <origin xyz="-0.042 0 -0.026" rpy="-3.141592654 -0 1.570796327" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.5707963267949054" upper="1.5707963267948877" effort="0" velocity="0" />
+  </joint>
+  <link name="trunk_base">
+    <visual>
+      <geometry>
+        <mesh filename="trunk_base" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="yaw2roll">
+    <visual>
+      <geometry>
+        <mesh filename="yaw2roll" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="hip_l">
+    <visual>
+      <geometry>
+        <mesh filename="hip_l" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="upper_leg_left">
+    <visual>
+      <geometry>
+        <mesh filename="upper_leg_left" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="leg">
+    <visual>
+      <geometry>
+        <mesh filename="leg" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="ankle_left">
+    <visual>
+      <geometry>
+        <mesh filename="ankle_left" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="neck">
+    <visual>
+      <geometry>
+        <mesh filename="neck" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="neck_pitch">
+    <visual>
+      <geometry>
+        <mesh filename="neck_pitch" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="yaw_roll_motion">
+    <visual>
+      <geometry>
+        <mesh filename="yaw_roll_motion" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="jaw_soft">
+    <visual>
+      <geometry>
+        <mesh filename="jaw_soft" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="jaw_pivot">
+    <visual>
+      <geometry>
+        <mesh filename="jaw_pivot" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="bearing_roll">
+    <visual>
+      <geometry>
+        <mesh filename="bearing_roll" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="hip_l_2">
+    <visual>
+      <geometry>
+        <mesh filename="hip_l_2" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="upper_leg_right">
+    <visual>
+      <geometry>
+        <mesh filename="upper_leg_right" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="leg_2">
+    <visual>
+      <geometry>
+        <mesh filename="leg_2" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="ankle_right">
+    <visual>
+      <geometry>
+        <mesh filename="ankle_right" />
+      </geometry>
+    </visual>
+  </link>
+</robot>
